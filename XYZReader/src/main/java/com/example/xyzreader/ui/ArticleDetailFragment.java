@@ -7,11 +7,15 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.SubtitleCollapsingToolbarLayout;
 import android.support.v4.app.ShareCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -41,8 +45,9 @@ public class ArticleDetailFragment extends Fragment implements
     private Cursor mCursor;
     private long mItemId;
     private View mRootView;
-//    private DrawInsetsFrameLayout mDrawInsetsFrameLayout;
+    //    private DrawInsetsFrameLayout mDrawInsetsFrameLayout;
     private Toolbar toolbarDetail;
+    private SubtitleCollapsingToolbarLayout subtitleCollapsingToolbarLayoutDetail;
 
     private ImageView mPhotoView;
 
@@ -74,7 +79,6 @@ public class ArticleDetailFragment extends Fragment implements
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
-
         setHasOptionsMenu(true);
     }
 
@@ -98,9 +102,14 @@ public class ArticleDetailFragment extends Fragment implements
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
 
-        mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
+        mPhotoView = mRootView.findViewById(R.id.photo);
 
-        toolbarDetail = (Toolbar) mRootView.findViewById(R.id.toolbarDetail);
+        toolbarDetail = mRootView.findViewById(R.id.toolbarDetail);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbarDetail);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        subtitleCollapsingToolbarLayoutDetail = mRootView.findViewById(R.id.subtitleCollapsingToolbarLayoutDetail);
 
         mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,7 +163,28 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.animate().alpha(1);
             toolbarDetail.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
 
-            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+            Date publishedDate = parsePublishedDate();
+            if (!publishedDate.before(START_OF_EPOCH.getTime())) {
+                subtitleCollapsingToolbarLayoutDetail.setSubtitle(Html.fromHtml(
+                        DateUtils.getRelativeTimeSpanString(
+                                publishedDate.getTime(),
+                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                                DateUtils.FORMAT_ABBREV_ALL).toString()
+                                + " by <font color='#ffffff'>"
+                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                + "</font>"));
+
+            } else {
+                // If date is before 1902, just show the string
+
+                subtitleCollapsingToolbarLayoutDetail.setSubtitle(Html.fromHtml(
+                        outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
+                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                + "</font>"));
+            }
+
+
+            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).substring(0, 1000).replaceAll("(\r\n|\n)", "<br />")));
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
@@ -207,4 +237,14 @@ public class ArticleDetailFragment extends Fragment implements
         bindViews();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                ((AppCompatActivity) getActivity()).onSupportNavigateUp();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

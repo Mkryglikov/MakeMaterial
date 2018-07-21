@@ -12,8 +12,8 @@
         android:layout_height="300dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbarLayoutDetail"
+        <android.support.design.widget.SubtitleCollapsingToolbarLayout
+            android:id="@+id/subtitleCollapsingToolbarLayoutDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/color_primary"
@@ -34,10 +34,9 @@
                 android:id="@+id/toolbarDetail"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_marginStart="56dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.SubtitleCollapsingToolbarLayout >
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
@@ -61,5 +60,6 @@
         android:layout_height="56dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        app:elevation="12dp"
         android:src="@drawable/ic_share" />
 </android.support.design.widget.CoordinatorLayout>

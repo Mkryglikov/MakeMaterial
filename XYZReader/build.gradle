@@ -13,12 +13,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
     }
 }
 
@@ -32,4 +32,5 @@ dependencies {
     compile "com.android.support:design:$androidSupportVersion"
     compile 'com.squareup.okhttp3:okhttp:3.1.2'
     compile files('libs/volley.jar')
-}
+
+    compile "com.hendraanggrian:collapsingtoolbarlayout-subtitle:$androidSupportVersion"}
