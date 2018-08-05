@@ -15,6 +15,9 @@ This project uses the Gradle build system. To build it, use the "gradlew build" 
 - OkHttp v3.1.2
 - [CollapsingToolbarLayout subtitle](https://github.com/HendraAnggrian/collapsingtoolbarlayout-subtitle) v26.1.0
 
+## Screenshots
+<img src="https://github.com/Mkryglikov/MakeMaterial/blob/master/screenshots/01.%20Main.jpg" width="250"/> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img src="https://github.com/Mkryglikov/MakeMaterial/blob/master/screenshots/02.%20Detail.jpg" width="250" />
+
 ## License
 MIT License
 
