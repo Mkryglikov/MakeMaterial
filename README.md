@@ -1,6 +1,6 @@
 # MakeMaterial
 
-**Part of Udacity's Android Developer Nanodegree Program.**
+**Part of Android Developer Scholarship by Google and Udacity.**
 
 A mock RSS feed reader featuring banner photos and headlines. 
 The task was to improve design of given app to correspond material design guidelines.
